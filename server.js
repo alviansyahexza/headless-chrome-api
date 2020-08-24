@@ -109,13 +109,15 @@ app.post('/screenshot', async (req, res) => {
     }
     const date = Date.now()
     let screenshotData = {
-        path: screenshotDir + date + '.' + ext
+        path: screenshotDir + date + '.' + ext,
+        quality: 10
     }
     try {
         if (url) {
             console.log('open for screenshot: ' + url)
             const context = await browser.createIncognitoBrowserContext();
             const page = await loadPage(context, url, js)
+            await page.setViewport({width: 720, height: 1080})
             await page.screenshot(screenshotData)
             page.close()
             context.close()
